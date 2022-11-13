@@ -23,9 +23,9 @@ namespace Bootcamp.Web.Repositories
             return await _webApiClient.InvokePostAsync("api/account/signIn", signIn);
         }
 
-        public async Task<IEnumerable> UserSignOut()
+        public async Task UserSignOut()
         {
-            return await _webApiClient.InvokeGetAsync<IEnumerable>("api/account/signOut");
+            await _webApiClient.InvokeSignOut("api/account/signOut");
         }
     }
 }

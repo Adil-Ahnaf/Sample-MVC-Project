@@ -15,4 +15,8 @@
     <ProjectReference Include="..\UserAuthentication.Business\UserAuthentication.Business.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DBScripts\" />
+  </ItemGroup>
+
 </Project>

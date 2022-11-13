@@ -56,10 +56,14 @@ namespace UserAuthentication.Api.Controllers
             if (user != null)
             {
                 var signInresult = await signInManager.PasswordSignInAsync(user, signIn.Password, signIn.IsPersistentCookie, true);
-                signIn.IsSuccess = signInresult.Succeeded;
-                signIn.EmailConfirmed = user.EmailConfirmed;
-                signIn.Name = user.UserName;
-                signIn.UserGuid = user.Id;
+                if (signInresult.Succeeded)
+                {
+                    signIn.IsSuccess = signInresult.Succeeded;
+                    signIn.EmailConfirmed = user.EmailConfirmed;
+                    signIn.Name = user.UserName;
+                    signIn.UserGuid = user.Id;
+                    await signInManager.SignInAsync(user, isPersistent: false);
+                }            
             }
             else
             {
@@ -70,10 +74,37 @@ namespace UserAuthentication.Api.Controllers
         }
 
         [HttpGet("signOut")]
-        public async Task UserSignOut()
+        public async Task<IActionResult> UserSignOut()
         {
             await signInManager.SignOutAsync();
-            httpContextAccessor.HttpContext.Session.Clear();
+            return Ok();
+        }
+
+        [HttpPost("checkCurrentPassword")]
+        public async Task<ChangePassword> checkCurrentPassword(ChangePassword changePassword)
+        {
+            ApplicationUser user = await userManager.FindByEmailAsync(changePassword.Email);//checking if user exist or not
+            if (user != null)
+            {
+                var result = await userManager.CheckPasswordAsync(user, changePassword.CurrentPassword);
+                changePassword.IsSuccess = result;
+                return changePassword;
+            }
+            else
+            {
+                changePassword.IsSuccess = false;
+                return changePassword;
+            }
+        }
+
+        [HttpPut("updatePassword")]
+        public async Task<IActionResult> UpdatePassword(ChangePassword changePassword)
+        {
+            ApplicationUser user = await userManager.FindByEmailAsync(changePassword.Email);//checking if user exist or not
+
+            await userManager.ChangePasswordAsync(user, changePassword.CurrentPassword, changePassword.NewPassword);
+
+            return Ok(0);
         }
     }
 }

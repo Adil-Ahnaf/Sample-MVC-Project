@@ -43,6 +43,12 @@ namespace UserAuthentication.Web.ApiClient
             await HandleError(response);
         }
 
+        public async Task InvokeSignOut(string uri)
+        {
+            var response = await httpClient.GetAsync(GetUrl(uri));
+            await HandleError(response);
+        }
+
         private string GetUrl(string uri)
         {
             return $"{baseUrl}/{uri}";
