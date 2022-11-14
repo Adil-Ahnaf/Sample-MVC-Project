@@ -1,12 +1,8 @@
-﻿using AspNetCore.Identity.Dapper.Models;
-using Bootcamp.Web.Repositories;
+﻿using Bootcamp.Web.Repositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
